@@ -19,9 +19,20 @@ namespace AspNetCore_RESTful_Ex
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly int? _httpsPort;
+
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
+            if (env.IsDevelopment())
+            {
+                var launchJsonConfig = new ConfigurationBuilder()
+                    .SetBasePath(env.ContentRootPath)
+                    .AddJsonFile("Properties\\launchSettings.json")
+                    .Build();
+
+                _httpsPort = launchJsonConfig.GetValue<int>("iisSettings:iisExpress:sslPort");
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -33,6 +44,10 @@ namespace AspNetCore_RESTful_Ex
             {
                 // sets exception messages
                 opt.Filters.Add(typeof(JsonExceptionFilter));
+                opt.SslPort = _httpsPort;
+                // enforces https
+
+                opt.Filters.Add(typeof(RequireHttpsAttribute));
 
                 // gets existing json formatter, removes it, then adds ION formatter created in Infrastructure class
                 var jsonFormatter = opt.OutputFormatters.OfType<JsonOutputFormatter>().Single();
