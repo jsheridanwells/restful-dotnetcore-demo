@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AspNetCore_RESTful_Ex.Filters;
 using AspNetCore_RESTful_Ex.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,6 +31,9 @@ namespace AspNetCore_RESTful_Ex
         {
             services.AddMvc(opt =>
             {
+                // sets exception messages
+                opt.Filters.Add(typeof(JsonExceptionFilter));
+
                 // gets existing json formatter, removes it, then adds ION formatter created in Infrastructure class
                 var jsonFormatter = opt.OutputFormatters.OfType<JsonOutputFormatter>().Single();
                 opt.OutputFormatters.Remove(jsonFormatter);
