@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="2.3.0" />
+    <PackageReference Include="nwebsec.aspnetcore.middleware" Version="2.0.0" />
   </ItemGroup>
 
 </Project>

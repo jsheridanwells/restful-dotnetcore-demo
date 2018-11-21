@@ -82,6 +82,12 @@ namespace AspNetCore_RESTful_Ex
             }
 
             app.UseHttpsRedirection();
+            app.UseHsts(opt =>
+            {
+                opt.MaxAge(days: 180);
+                opt.IncludeSubdomains();
+                opt.Preload();
+            });
             app.UseMvc();
         }
     }
